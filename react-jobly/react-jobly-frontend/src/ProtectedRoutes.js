@@ -1,26 +1,29 @@
-import {useContext, useEffect} from "react";
+import {useContext, useEffect, useState} from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 import UserContext from "./UserContext";
 
 export function ProtectedRoutes(){
-    const {currUser} = useContext(UserContext);
+    const {currUser, loading} = useContext(UserContext);
     const navigate = useNavigate();
 
     useEffect(() =>{
-        async function checkUser(){
-            await currUser;
-            if(!currUser){
-                return navigate("/")
+        function checkUser(){
+            if(!loading){
+                if(!currUser){
+                    return navigate('/');
+                }
             }
         }
         checkUser()
-    },[])
+    },[loading])
 
+    if(loading){
+        return <></>
+    }
     return(
-        <div className="container">
-            <Outlet></Outlet>
-        </div>
-        
+            <Outlet>
+
+            </Outlet>
     )
     
 }

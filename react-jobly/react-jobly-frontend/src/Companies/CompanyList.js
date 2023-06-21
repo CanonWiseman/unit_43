@@ -4,17 +4,16 @@ import { useFetch } from "../hooks/useFetch";
 import { SearchForm } from "../forms/SearchForm";
 
 export function CompaniesList(){
-
     const companies = useFetch([], "getCompanies");
-
-    if(companies.isLoading){
-        return <p>Loading...</p>
+    
+    if(companies.loading){
+        return <></>
     }
-
+       
     return (
         <div className="container">
             <SearchForm updateList={companies.updateApiCall}/>
-            {companies.data.map(company => (
+            {companies.data.map(company => ( 
                 <CompanyCard key={company.handle} company={company}/>
             ))}
         </div>

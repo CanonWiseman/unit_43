@@ -5,11 +5,10 @@ import { JobCard } from "../Jobs/JobCard";
 
 export function CompanyDetails(){
     const params = useParams();
-    
     const company = useFetch({}, "getCompany", params.id);
     
-    if(company.isLoading){
-        return <p>Loading</p>
+    if(company.loading){
+        return <></>
     }
     return(
         <div className="container">

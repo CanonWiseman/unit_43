@@ -10,6 +10,7 @@ export function CompanyCard({company}){
                     <CardBody>
                         <CardTitle>{company.name}</CardTitle>
                         <CardText>{company.description}</CardText>
+                        {company.logoUrl?<img src={company.logoUrl} alt={company.handle}/>:null}
                     </CardBody>
                 </Card>
             </Link>

@@ -6,8 +6,9 @@ import { SearchForm } from "../forms/SearchForm";
 export function JobList(){
 
     const jobs = useFetch([], "getJobs");
-    if(jobs.isLoading){
-        return <p>isLoading</p>
+    
+    if(jobs.loading){
+        return <></>
     }
     return(
         <div className="container">

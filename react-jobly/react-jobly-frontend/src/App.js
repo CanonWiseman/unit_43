@@ -6,55 +6,72 @@ import { Router } from './Router';
 import JoblyApi from "./api";
 import UserContext from './UserContext';
 import { useLocalStorage } from './hooks/useLocalStorage';
+import {  decodeToken } from "react-jwt";
+
 
 function App() {
 
-  const [currUserName, setCurrUserName] = useState(useLocalStorage("username", "getItem"));
-  const [token, setToken] = useState(useLocalStorage("token", "getItem"));
+  const [token, setToken] = useLocalStorage("token")
   const [currUser, setCurrUser] = useState(null);
-  
+  const [loading, setLoading] = useState(true);
+  const [applications, setApplications] = useState(new Set([]));
 
   async function Login(userData){
     let res = await JoblyApi.login(userData);
-    setCurrUserName(userData.username);
-    useLocalStorage("token", "setItem", res.token)
-    useLocalStorage("username", "setItem", userData.username);
     setToken(res.token);
   } 
 
   async function SignUp(userData){
-    let res = await JoblyApi.register(userData);
-    setCurrUserName(userData.username);
-    useLocalStorage("token", "setItem", res.token)
-    useLocalStorage("username", "setItem", userData.username);
-    setToken(res.token);
+      try{
+        let res = await JoblyApi.register(userData);
+        setToken(res.token);
+      }
+      catch(e){
+        return e
+      }
   }
 
   function Logout(){
-    localStorage.clear();
-    setCurrUser(null);
-    JoblyApi.logout();
+    setLoading(true);
+    setToken(null);
+  }
+
+  function hasAppliedToJob(id) {
+    return applications.has(id);
+  }
+
+  async function applyToJob(id) {
+    if (hasAppliedToJob(id)) return;
+    await JoblyApi.applyForJob(currUser.username, id);
+    setApplications(new Set([...applications, id]));
   }
 
   useEffect(() => {
-      async function getUser(){
+      async function checkForUser(){
         if(token){
+          const payload = decodeToken(token);
           JoblyApi.setToken(token); 
-          let res = await JoblyApi.getUser(currUserName);
+          let res = await JoblyApi.getUser(payload.username);
           setCurrUser(res);
+          setApplications(new Set(res.applications));
+          setLoading(false);
+        }
+        else{
+          setCurrUser(null);
+          setLoading(false);
         }
       }
-      getUser()
+      checkForUser()
   }, [token]);
 
   return (
     <div className="App">
       <BrowserRouter>
-        <UserContext.Provider value={{currUser, Login, Logout, SignUp}}>
-          <NavBar/>
-          <main>
-            <Router/>
-          </main>
+        <UserContext.Provider value={{currUser, Login, Logout, SignUp, loading, setCurrUser, hasAppliedToJob, applyToJob}}>
+            <NavBar/>
+              <main>
+                <Router/>
+              </main>
         </UserContext.Provider>
       </BrowserRouter>
     </div>

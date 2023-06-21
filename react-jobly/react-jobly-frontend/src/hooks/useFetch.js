@@ -3,23 +3,24 @@ import JoblyApi from "../api";
 
 export function useFetch(initialValue, apiCall, params=""){
     const [data, setData] = useState(initialValue);
-    const [apiFunc, setApiFunc] = useState(apiCall);
+    const [apiFunc] = useState(apiCall);
     const [currParams, setCurrParams] = useState(params);
-    const [isLoading, setIsLoading] = useState(true);
-    
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         async function makeCall(){
-            setIsLoading(true);
             const res = await JoblyApi[apiFunc](currParams);
             setData(res);
-            setIsLoading(false);
+            setLoading(false);
         }
         makeCall();
+
+        return setLoading(true);
     }, [currParams]);
 
     function updateApiCall(newParams){
         setCurrParams(newParams);
     }
 
-    return {data, isLoading, updateApiCall};
+    return {data, loading, updateApiCall};
 }

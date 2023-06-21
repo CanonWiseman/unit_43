@@ -26,9 +26,10 @@ export function SignUpForm(){
 
     const handleSubmit = async(e) =>{
         e.preventDefault();
-        SignUp({...formData});
+        const result = await SignUp({...formData});
         setFormData(INITIAL_VALUES);
         navigate("/");
+        console.log(result);
     }
     return (
         <div className="container">
