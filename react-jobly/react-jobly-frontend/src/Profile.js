@@ -1,10 +1,14 @@
 import React, {useState, useContext} from "react";
 import UserContext from "./UserContext";
 import JoblyApi from "./api";
+import { DisplayMessage } from "./DisplayMessage";
+import "./Profile.css";
 
 export function Profile(){
     const {currUser, setCurrUser} = useContext(UserContext);
-    
+    const [messages, setMessages] = useState([]);
+    const [messageType, setMessageType] = useState(null)
+
     const INITIAL_VALUES = {
         firstName: currUser.firstName,
         lastName: currUser.lastName,
@@ -26,9 +30,12 @@ export function Profile(){
         try{
             const res = await JoblyApi.updateUser(formData, currUser.username);
             setCurrUser(res);
+            setMessages(["Success! Profile Updated"]);
+            setMessageType("#5cb85c");
         }
         catch(e){
-            console.log(e);
+            setMessages(e)
+            setMessageType("#d9534f")
         }
         
     }
@@ -36,9 +43,9 @@ export function Profile(){
         return <p>Loading</p>
     }
     return (
-        <div className="container">
+        <div className="container Profile">
             <h1>Profile</h1>
-            <form onSubmit={handleSubmit}>
+            <form className="text-center" onSubmit={handleSubmit}>
                 <input
                     id="username"
                     name="username"
@@ -67,8 +74,9 @@ export function Profile(){
                     value={formData.email}
                     onChange={handleChange}
                 />
-                <button>Submit</button>
+                <button className="btn btn-dark">Submit</button>
             </form>
+            <DisplayMessage color={messageType} messages={messages}/>
         </div>
     )
 }

@@ -1,0 +1,8 @@
+.JobCard{
+    height: 220px;
+    margin-top: 15px;
+}
+
+.JobCard-title{
+    font-size: 20px;
+}

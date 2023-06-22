@@ -1,6 +1,7 @@
 import React, {useContext, useState, useEffect} from "react";
 import { CardBody, Card, CardTitle, CardText } from "reactstrap";
 import UserContext from "../UserContext";
+import "./JobCard.css";
 
 export function JobCard({job}){
     const { hasAppliedToJob, applyToJob } = useContext(UserContext);
@@ -18,9 +19,9 @@ export function JobCard({job}){
 
     return(
         <div className="col-lg-8">
-            <Card color="light">
-                <CardBody>
-                    <CardTitle>
+            <Card className="JobCard">
+                <CardBody className="JobCard-body">
+                    <CardTitle className="JobCard-title">
                         {job.title}
                     </CardTitle>
                     {job.companyHandle?<CardTitle>{job.companyHandle}</CardTitle>: null}
@@ -33,6 +34,7 @@ export function JobCard({job}){
                     <button
                         onClick={handleApply}
                         disabled={applied}
+                        className={applied? "btn btn-success": "btn btn-primary"}
                     >
                         {applied ? "Applied" : "Apply"}
                     </button>

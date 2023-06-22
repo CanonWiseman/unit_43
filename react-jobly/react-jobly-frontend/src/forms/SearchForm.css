@@ -1,0 +1,9 @@
+.SearchForm > *{
+    display: inline;
+    margin-right: 15px;
+}
+
+.SearchForm > button{
+    height: 44px;
+}
+

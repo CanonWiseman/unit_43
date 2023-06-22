@@ -1,25 +1,26 @@
 import React, {useContext} from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, Link } from "react-router-dom";
 import { Navbar, Nav, NavItem } from "reactstrap";
 import UserContext from "./UserContext";
+import "./NavBar.css"
 
 export function NavBar () {
     const navigate = useNavigate();
     const {Logout, currUser} = useContext(UserContext)
     return (
-        <div>
+        <div className="Navbar">
             <Navbar expand="md">
-                <NavLink to="/" className="navbar-brand">
+                <Link to="/" className="Navbar-logo">
                     JOBLY
-                </NavLink>  
+                </Link>  
                 <Nav className="ml-auto" navbar>
-                    <NavItem>
+                    <NavItem className="Navbar-links">
                         {currUser?
                             <>
                                 <NavLink to="/companies">Companies</NavLink>
                                 <NavLink to="/jobs">Jobs</NavLink>
                                 <NavLink to="/profile">Profile</NavLink>
-                                <NavLink onClick={()=>{Logout(); navigate("/")}}>Logout {currUser.username}</NavLink>
+                                <Link onClick={()=>{Logout(); navigate("/")}}>Logout {currUser.username}</Link>
                             </>
                         : 
                           <>

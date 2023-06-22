@@ -17,8 +17,13 @@ function App() {
   const [applications, setApplications] = useState(new Set([]));
 
   async function Login(userData){
-    let res = await JoblyApi.login(userData);
-    setToken(res.token);
+    try{
+      let res = await JoblyApi.login(userData);
+      setToken(res.token);
+    }
+    catch(e){
+      return e
+    }
   } 
 
   async function SignUp(userData){
@@ -32,7 +37,7 @@ function App() {
   }
 
   function Logout(){
-    setLoading(true);
+    setCurrUser(null);
     setToken(null);
   }
 
@@ -49,21 +54,26 @@ function App() {
   useEffect(() => {
       async function checkForUser(){
         if(token){
-          const payload = decodeToken(token);
-          JoblyApi.setToken(token); 
-          let res = await JoblyApi.getUser(payload.username);
-          setCurrUser(res);
-          setApplications(new Set(res.applications));
-          setLoading(false);
+          try{
+            const payload = decodeToken(token);
+            JoblyApi.setToken(token); 
+            let res = await JoblyApi.getUser(payload.username);
+            setCurrUser(res);
+            setApplications(new Set(res.applications));
+          }
+          catch{
+            setCurrUser(null);
+          }
         }
-        else{
-          setCurrUser(null);
-          setLoading(false);
-        }
+        setLoading(false);
       }
-      checkForUser()
+      setLoading(true);
+      checkForUser();
   }, [token]);
 
+  if(loading){
+    return <></>
+  }
   return (
     <div className="App">
       <BrowserRouter>

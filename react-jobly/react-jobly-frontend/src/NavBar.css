@@ -1,0 +1,35 @@
+
+.Navbar-links a{
+    margin-left: 20px;
+    margin-right: 20px;
+    font-size: 18px;
+}
+
+.Navbar-links a:hover{
+    text-decoration: underline;
+}
+
+.navbar{
+    background-color: #52B69A;
+    height: 75px;
+}
+
+.container-fluid{
+    height: 100%;
+}
+
+.Navbar-logo, .Navbar-links a{
+    color: black;
+    text-decoration: none;
+}
+
+.Navbar-logo{
+    font-size: 28px;
+    font-weight: 400;
+}
+
+.active{
+    text-decoration: underline;
+    font-weight: bold;
+}
+

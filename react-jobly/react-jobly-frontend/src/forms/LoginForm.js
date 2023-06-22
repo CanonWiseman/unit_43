@@ -1,6 +1,8 @@
 import React, {useState, useContext} from "react";
 import UserContext from "../UserContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; 
+import { DisplayMessage } from "../DisplayMessage";
+import "./LoginForm.css"
 
 export function LoginForm(){
     const {Login} = useContext(UserContext);
@@ -11,6 +13,7 @@ export function LoginForm(){
     }
 
     const [formData, setFormData] = useState(INITIAL_VALUES);
+    const [errors, setErrors] = useState([]);
 
     const handleChange = evt => {
         const { name, value } = evt.target;
@@ -22,14 +25,20 @@ export function LoginForm(){
 
     const handleSubmit = async(e) =>{
         e.preventDefault();
-        Login({...formData})
-        setFormData(INITIAL_VALUES);
-        navigate("/");
+        const loginRes = await Login({...formData});
+        if(loginRes){
+            setErrors(loginRes);
+        }
+        else{
+            setFormData(INITIAL_VALUES);
+            navigate("/");
+        }
     }
+
     return (
-        <div className="container">
-            <h1>Log In</h1>
-            <form onSubmit={handleSubmit}>
+        <div className="container Login">
+            <h1 className="Login-title">Log In</h1>
+            <form className="Login-Form text-center" onSubmit={handleSubmit}>
                 <input
                     id="username"
                     name="username"
@@ -46,8 +55,9 @@ export function LoginForm(){
                     value={formData.password}
                     onChange={handleChange}
                 />
-                <button>Submit</button>
+                <button className="btn btn-dark">Submit</button>
             </form>
+            <DisplayMessage color="#d9534f" messages={errors}/>
         </div>
         
     )

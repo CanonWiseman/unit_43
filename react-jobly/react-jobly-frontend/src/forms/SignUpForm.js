@@ -1,10 +1,13 @@
 import React, {useState, useContext} from "react";
 import UserContext from "../UserContext";
 import { useNavigate } from "react-router-dom";
+import { DisplayMessage } from "../DisplayMessage";
+import "./SignUpForm.css";
 
 export function SignUpForm(){
     const {SignUp} = useContext(UserContext);
     const navigate = useNavigate();
+    const [errors, setErrors] = useState([]);
 
     const INITIAL_VALUES = {
         username: "",
@@ -26,15 +29,20 @@ export function SignUpForm(){
 
     const handleSubmit = async(e) =>{
         e.preventDefault();
-        const result = await SignUp({...formData});
-        setFormData(INITIAL_VALUES);
-        navigate("/");
-        console.log(result);
+        const registerRes = await SignUp({...formData});
+        if(registerRes){
+            setErrors(registerRes);
+        }
+        else{
+            setFormData(INITIAL_VALUES);
+            navigate("/");
+        }
+        
     }
     return (
-        <div className="container">
+        <div className="container SignUp">
             <h1>Sign Up</h1>
-            <form onSubmit={handleSubmit}>
+            <form className="text-center" onSubmit={handleSubmit}>
                 <input
                     id="username"
                     name="username"
@@ -75,8 +83,9 @@ export function SignUpForm(){
                     value={formData.email}
                     onChange={handleChange}
                 />
-                <button>Submit</button>
+                <button className="btn btn-dark">Submit</button>
             </form>
+            <DisplayMessage color="#d9534f" messages={errors}/>
         </div>
         
     )

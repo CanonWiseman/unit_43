@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useFetch } from "../hooks/useFetch";
 import { JobCard } from "../Jobs/JobCard";
+import "./CompanyDetails.css";
 
 export function CompanyDetails(){
     const params = useParams();
@@ -12,8 +13,10 @@ export function CompanyDetails(){
     }
     return(
         <div className="container">
-            <h1>{company.data.name}</h1>
-            <h2>{company.data.description}</h2>
+            <div className="col-lg-8">
+                <h1 className="CompanyDetails-title">{company.data.name}</h1>
+                <h2 className="CompanyDetails-desc">{company.data.description}</h2>
+            </div>
             {company.data.jobs.map(job => (
                 <JobCard key={job.id} job={job}/>
             ))}

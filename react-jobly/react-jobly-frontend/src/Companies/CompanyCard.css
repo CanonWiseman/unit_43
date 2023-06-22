@@ -1,0 +1,28 @@
+.CompanyCard-desc{
+    display: inline-block;
+    width:60%;
+}
+
+.CompanyCard-title{
+    display: inline-block;
+    width:60%;
+    font-size: 20px;
+}
+
+.CompanyCard-img{
+    float: right;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.CompanyCard-card-body{
+    height: 200px;
+}
+
+.CompanyCard-card{
+    margin-top: 15px;
+}
+
+.CompanyCard-card:hover{
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}

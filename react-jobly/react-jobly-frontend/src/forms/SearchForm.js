@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-
+import "./SearchForm.css";
 export function SearchForm({updateList}){
 
     const INITIAL_VALUES = {
@@ -22,7 +22,7 @@ export function SearchForm({updateList}){
         setFormData(INITIAL_VALUES);
     }
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="SearchForm"onSubmit={handleSubmit}>
             <input
                 id="searchVal"
                 name="searchVal"
@@ -31,7 +31,7 @@ export function SearchForm({updateList}){
                 value={formData.searchVal}
                 onChange={handleChange}
             />
-            <button>Submit</button>
+            <button className="btn btn-dark">Submit</button>
         </form>
     )
 }

@@ -10,7 +10,6 @@ export function useLocalStorage(key){
         else{
             localStorage.setItem(key, item);
         }
-        console.log(localStorage);
     }, [item])
 
     return [item, setItem]
